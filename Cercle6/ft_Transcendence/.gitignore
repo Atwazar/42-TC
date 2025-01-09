@@ -1,0 +1,30 @@
+# dependencies
+.vscode
+.idea
+
+# misc
+.DS_Store
+*.pem
+
+# local env files
+pong-game/.env
+.env
+.env.local
+.env.development.local
+
+# Django stuff
+*.log
+/pong-game/backend/app/media/profile_images
+/pong-game/backend/app/venv
+/pong-game/backend/app/backend/__pycache__/
+
+# Test dependencies
+pong-game/tests/lib/
+
+# C extensions
+*.so
+*.o
+
+# ELK certs
+pong-game/monitoring/elk/certs
+pong-game/monitoring/certs

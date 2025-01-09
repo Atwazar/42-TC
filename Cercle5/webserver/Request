@@ -1,0 +1,8 @@
+curl -X POST http://localhost:8081/cgi/python/testo.py \
+    -F "name=fileUpload" \
+curl http://localhost:8081/method
+curl -X POST http://localhost:8081/post/ \
+     -F "file=@trash.jpg;type=image/jpeg" \
+     -F "description=My file" \
+     -F "name=fileUpload"
+curl -X DELETE http://localhost:8081/post/index.html

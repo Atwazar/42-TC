@@ -1,0 +1,118 @@
+filebeat.inputs:
+# Nginx Logs
+- type: filestream
+  id: nginx-access-logs
+  enabled: true
+  paths:
+    - /var/log/nginx/access.log
+  json.keys_under_root: true # key and values are not nested under "json"
+  json.add_error_key: true # add error messages when parsing fails
+  fields:
+    type: "nginx"
+    source: "access"
+
+- type: filestream
+  id: nginx-error-logs
+  enabled: true
+  paths:
+    - /var/log/nginx/error.log
+  fields:
+    type: "nginx"
+    source: "error"
+  multiline:
+    pattern: '^[0-9]{4}/[0-9]{2}/[0-9]{2}'
+    negate: true
+    match: after
+
+# Django logs
+- type: filestream
+  id: game-consumer-logs
+  enabled: true
+  paths:
+    - /var/log/django/gameconsumers.log
+  fields:
+    type: "django"
+    source: "game_consumer"
+  multiline:
+    pattern: '^(INFO|WARNING|ERROR|DEBUG)'
+    negate: true
+    match: after
+
+- type: filestream
+  id: game-room-logs
+  enabled: true
+  paths:
+    - /var/log/django/gamerooms.log
+  fields:
+    type: "django"
+    source: "game_room"
+  multiline:
+    pattern: '^(INFO|WARNING|ERROR|DEBUG)'
+    negate: true
+    match: after
+
+# # Temporary comment out WAF logs
+# - type: filestream
+#   id: modsecurity-audit-logs
+#   enabled: true
+#   paths:
+#     - /var/log/modsec/audit.log
+#   fields:
+#     type: "waf"
+#     source: "audit"
+#   multiline:
+#     type: pattern
+#     pattern: '^---[A-Za-z0-9]{8}---[A-Z]--'
+#     negate: true
+#     match: after
+#   close_inactive: 5s
+#   ignore_older: 24h
+
+# - type: filestream
+#   id: modsecurity-debug-logs
+#   enabled: true
+#   paths:
+#     - /var/log/modsec/debug.log
+#   fields:
+#     type: "waf"
+#     source: "debug"
+#   multiline:
+#     pattern: '^\[[.*?\]'
+#     negate: true
+#     match: after
+
+# # Other logs collection templates for future expansion
+# # Application Services Logs
+# - type: filestream
+#   id: user-service-logs
+#   enabled: true
+#   paths:
+#     - /var/log/user/*.log
+#   fields:
+#     type: application
+#     service: user
+#     category: user
+
+output.logstash:
+  hosts: ["logstash:5044"]
+  protocal: "ssl"
+  ssl:
+    enabled: true
+    verification_mode: "full"
+    certificate_authorities: ["/usr/share/filebeat/certs/ca.crt"]
+    certificate: "/usr/share/filebeat/certs/filebeat.crt"
+    key: "/usr/share/filebeat/certs/filebeat.key"
+
+beat.version: "7.17.0"
+
+logging:
+  level: info
+  to_files: true
+  files:
+    path: /var/log/filebeat
+    name: filebeat
+    keepfiles: 7
+    permissions: 0644
+
+setup.ilm.enabled: false
+setup.template.enabled: false

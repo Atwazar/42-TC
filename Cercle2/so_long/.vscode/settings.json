@@ -1,0 +1,15 @@
+{
+    "files.associations": {
+        "so_long.h": "c",
+        "fcntl.h": "c",
+        "x.h": "c"
+    },
+    "C_Cpp.dimInactiveRegions": false,
+    "editor.tabSize": 4,
+    "editor.insertSpaces": false,
+    "editor.detectIndentation": false,
+    "editor.renderWhitespace": "all",
+    "files.trimTrailingWhitespace": true,
+    "files.insertFinalNewline": true,
+    "files.autoSave": "afterDelay",
+}
